@@ -1,6 +1,6 @@
 # Rtc-SSH
 SSH via WebRTC (pions) tunnel
-Rtc-SSH enables connection with SSH protocol eg Raspberry PI BeagleBone and other devices, servers from the browser using WebRTC. Solves the problem of the lack of public IP address, proxy server, servers behind NAT etc. You can connect to an SSH session: https://www.sqs.io/
+Rtc-SSH enables connection with SSH protocol eg Raspberry PI BeagleBone and other devices, servers from the browser using WebRTC. Solves the problem of the lack of public IP address, proxy server, servers behind NAT etc. You can connect to an SSH session: https://www.sqs.io
 ### Usage
 
 ```
@@ -13,4 +13,4 @@ $ ./rtc-ssh newkey
 uuid xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 Signal OK
 ```
-You can connect to a SSH session, copy uuid key and paste on the static page: https://www.sqs.io 
+Copy uuid key and paste on the static page: https://www.sqs.io 
