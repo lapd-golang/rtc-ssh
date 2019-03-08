@@ -12,5 +12,4 @@ $ ./rtc-ssh newkey
 uuid xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 Signal OK
 ```
-You can connect to a SSH session from this static page:
-Copy uuid key and paste on the https://www.sqs.io 
+You can connect to a SSH session, copy uuid key and paste on the static page: https://www.sqs.io 
