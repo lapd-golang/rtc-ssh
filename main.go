@@ -7,10 +7,9 @@ import (
 	"log"
 	"os/signal"
 	"time"
-//	"github.com/pions/webrtc"
 	"github.com/google/uuid"
 	"github.com/gorilla/websocket"
-ini "github.com/pierrec/go-ini"
+    ini "github.com/pierrec/go-ini"
 )
 
 
@@ -44,11 +43,11 @@ func connect(query string) *websocket.Conn {
 		conn, _, err = websocket.DefaultDialer.Dial(u.String(), nil)
 		if err != nil {
 			log.Println(err)
-			time.Sleep(30 * time.Second)
+			time.Sleep(4 * time.Second)
 			continue
 		}
 		break
-    }
+	}
 
 	lastResponse := time.Now()
 	conn.SetPongHandler(func(msg string) error {
