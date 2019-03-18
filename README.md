@@ -16,4 +16,4 @@ $ ./rtc-ssh newkey
 uuid xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 Signal OK
 ```
-Copy uuid key and paste on the static page: https://www.sqs.io 
+Option <code>newkey</code> usage only first run, enter the <b>uuid</b> key on the website: https://www.sqs.io 
