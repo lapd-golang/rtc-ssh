@@ -94,6 +94,8 @@ func main() {
 	switch cmd {
 		case "newkey":
 			conf.Uuid = uuid.New().String()
+			conf.Host = defaultHost
+			conf.Port = defaultPort
 			file, err := os.Create("config.ini")
 			check(err)
 			defer file.Close()
