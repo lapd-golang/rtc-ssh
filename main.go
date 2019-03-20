@@ -90,6 +90,8 @@ func main() {
 		cmd = os.Args[1]
 	}
 	
+	var conf Config
+	
 	getConf := func(){
 		file, err := os.Open(executablePath + "/config.ini") 
 		if os.IsNotExist(err) && cmd != "newkey"{
