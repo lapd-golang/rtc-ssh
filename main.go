@@ -7,6 +7,7 @@ import (
 	"log"
 	"os/signal"
 	"time"
+	"path/filepath"
 	"github.com/google/uuid"
 	"github.com/gorilla/websocket"
     ini "github.com/pierrec/go-ini"
@@ -78,7 +79,15 @@ func main() {
 		
 	interrupt := make(chan os.Signal, 1)
 	signal.Notify(interrupt, os.Interrupt)
-	file, err := os.Open("config.ini")
+	
+	
+	var executablePath string
+	ex, err := os.Executable()
+    	check(err)
+	executablePath = filepath.Dir(ex)
+	
+	
+	file, err := os.Open(executablePath + "/config.ini")
 	check(err)
 	defer file.Close()
 	var conf Config
@@ -96,7 +105,7 @@ func main() {
 			conf.Uuid = uuid.New().String()
 			conf.Host = defaultHost
 			conf.Port = defaultPort
-			file, err := os.Create("config.ini")
+			file, err := os.Create(executablePath + "/config.ini")
 			check(err)
 			defer file.Close()
 			err = ini.Encode(file, &conf)
