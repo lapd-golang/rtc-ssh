@@ -80,24 +80,25 @@ func main() {
 	interrupt := make(chan os.Signal, 1)
 	signal.Notify(interrupt, os.Interrupt)
 	
-	
 	var executablePath string
 	ex, err := os.Executable()
     	check(err)
 	executablePath = filepath.Dir(ex)
-	
-	
-	file, err := os.Open(executablePath + "/config.ini")
-	check(err)
-	defer file.Close()
-	var conf Config
-	err = ini.Decode(file, &conf)
-	check(err)
-	
 	cmd := ""
 		
 	if len(os.Args) > 1 {
 		cmd = os.Args[1]
+	}
+	
+	getConf := func(){
+		file, err := os.Open(executablePath + "/config.ini") 
+		if os.IsNotExist(err) && cmd != "newkey"{
+			log.Println("File config.ini not found, using option 'newkey'")
+			os.Exit(0)
+		} 
+		defer file.Close()	
+		err = ini.Decode(file, &conf)
+		check(err)
 	}
 	
 	switch cmd {
@@ -112,10 +113,13 @@ func main() {
 			check(err)
 			fmt.Println("uuid:", conf.Uuid)	
 		case "getkey":
+			getConf()
 			fmt.Println("uuid:", conf.Uuid)
 		case "help":
 			fmt.Println(usage)
 			os.Exit(0)
+		default:
+			getConf()
 	}
 		
 	
