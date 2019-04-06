@@ -47,7 +47,7 @@ func main() {
 	
 	getConf := func(){
 		file, err := os.Open(executablePath + "/config.ini") 
-		if os.IsNotExist(err) && !newkey {
+		if os.IsNotExist(err) && !*newkey {
 			log.Println("File config.ini not found, using option 'newkey'")
 			os.Exit(0)
 		} 
@@ -56,7 +56,7 @@ func main() {
 		check(err)
 	}
 	
-	if newkey {
+	if *newkey {
 		conf.Uuid = uuid.New().String()
 		conf.Host = defaultHost
 		conf.Port = defaultPort
@@ -66,7 +66,7 @@ func main() {
 		err = ini.Encode(file, &conf)
 		check(err)
 		fmt.Println("uuid:", conf.Uuid)	
-	} else if getkey { 
+	} else if *getkey { 
 		getConf()
 		fmt.Println("uuid:", conf.Uuid)
 	} else {
