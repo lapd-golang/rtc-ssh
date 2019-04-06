@@ -22,10 +22,10 @@ cd $GOPATH/bin
 ```
 ### First run
 ```
-./rtc-ssh newkey
+./rtc-ssh -newkey
 uuid xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 Signal OK
 ```
-Option <code>newkey</code> usage only first run, enter the <b>uuid</b> key on the website: https://www.sqs.io 
+Option <code>-newkey</code> usage only first run, enter the <b>uuid</b> key on the website: https://www.sqs.io 
 
 Rtc-SSH uses the pion-WebRTC library: https://github.com/pions/webrtc
