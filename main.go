@@ -44,7 +44,7 @@ func connect(query string) *websocket.Conn {
 		conn, _, err = websocket.DefaultDialer.Dial(u.String(), nil)
 		if err != nil {
 			log.Println(err)
-			time.Sleep(4 * time.Second)
+			time.Sleep(30 * time.Second)
 			continue
 		}
 		break
