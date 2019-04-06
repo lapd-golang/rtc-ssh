@@ -21,58 +21,16 @@ commands:
 	getkey     get key uuid
 `
 type Config struct {
-	Uuid     string        `ini:"uuid,identify"`
-	Host     string        `ini:"host,ssh"`
-	Port     int           `ini:"port,ssh"`
+	Uuid     string  `ini:"uuid,identify"`
+	Host     string  `ini:"host,ssh"`
+	Port     int     `ini:"port,ssh"`
 }
 
 type Json struct {
 	Type string   `json:"type"`
 	Sdp  string   `json:"sdp"`	
-	Error string   `json:"error"`
+	Error string  `json:"error"`
 }
-
-
-
-func connect(query string) *websocket.Conn {
-	var u url.URL
-	var conn *websocket.Conn
-	var err error
-	
-	u = url.URL{Scheme: "wss", Host: "sqs.io", Path: "/signal", RawQuery: query}
-	for {
-		conn, _, err = websocket.DefaultDialer.Dial(u.String(), nil)
-		if err != nil {
-			log.Println(err)
-			time.Sleep(30 * time.Second)
-			continue
-		}
-		break
-	}
-
-	lastResponse := time.Now()
-	conn.SetPongHandler(func(msg string) error {
-		lastResponse = time.Now()
-		return nil
-	})
-		
-	go func() {
-		for {
-			err := conn.WriteMessage(websocket.PingMessage, nil)
-			if err != nil {
-				return 
-			}   
-			time.Sleep((120 * time.Second)/2)
-			if(time.Now().Sub(lastResponse) > (120 * time.Second)) {
-				log.Println("signaling server close connection")
-				conn.Close()
-				return
-			}
-		}
-	}()
- 	return conn
-}
-
 
 func main() {
 	log.SetFlags(0)
@@ -84,8 +42,8 @@ func main() {
 	ex, err := os.Executable()
     	check(err)
 	executablePath = filepath.Dir(ex)
+	
 	cmd := ""
-		
 	if len(os.Args) > 1 {
 		cmd = os.Args[1]
 	}
@@ -157,6 +115,47 @@ func main() {
 	}
 
 }
+
+func connect(query string) *websocket.Conn {
+	var u url.URL
+	var conn *websocket.Conn
+	var err error
+	
+	u = url.URL{Scheme: "wss", Host: "sqs.io", Path: "/signal", RawQuery: query}
+	for {
+		conn, _, err = websocket.DefaultDialer.Dial(u.String(), nil)
+		if err != nil {
+			log.Println(err)
+			time.Sleep(30 * time.Second)
+			continue
+		}
+		break
+	}
+
+	lastResponse := time.Now()
+	conn.SetPongHandler(func(msg string) error {
+		lastResponse = time.Now()
+		return nil
+	})
+		
+	go func() {
+		for {
+			err := conn.WriteMessage(websocket.PingMessage, nil)
+			if err != nil {
+				return 
+			}   
+			time.Sleep((120 * time.Second)/2)
+			if(time.Now().Sub(lastResponse) > (120 * time.Second)) {
+				log.Println("signaling server close connection")
+				conn.Close()
+				return
+			}
+		}
+	}()
+ 	return conn
+}
+
+
 
 
 func hub(c_hub <-chan struct{}, conf Config) {
