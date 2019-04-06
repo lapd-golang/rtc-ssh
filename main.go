@@ -15,11 +15,6 @@ import (
 
 
 
-const usage = `Usage: server [commands]
-commands:
-	newkey     new generate key uuid of connection
-	getkey     get key uuid
-`
 type Config struct {
 	Uuid     string  `ini:"uuid,identify"`
 	Host     string  `ini:"host,ssh"`
