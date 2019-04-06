@@ -43,16 +43,15 @@ func main() {
     	check(err)
 	executablePath = filepath.Dir(ex)
 	
-	cmd := ""
-	if len(os.Args) > 1 {
-		cmd = os.Args[1]
-	}
+	newkey := flag.Bool("newkey", false, "new generate key uuid of connection")
+	getkey := flag.Bool("getkey", false, "display key uuid")
+	flag.Parse()
 	
 	var conf Config
 	
 	getConf := func(){
 		file, err := os.Open(executablePath + "/config.ini") 
-		if os.IsNotExist(err) && cmd != "newkey"{
+		if os.IsNotExist(err) && !newkey {
 			log.Println("File config.ini not found, using option 'newkey'")
 			os.Exit(0)
 		} 
@@ -61,27 +60,22 @@ func main() {
 		check(err)
 	}
 	
-	switch cmd {
-		case "newkey":
-			conf.Uuid = uuid.New().String()
-			conf.Host = defaultHost
-			conf.Port = defaultPort
-			file, err := os.Create(executablePath + "/config.ini")
-			check(err)
-			defer file.Close()
-			err = ini.Encode(file, &conf)
-			check(err)
-			fmt.Println("uuid:", conf.Uuid)	
-		case "getkey":
-			getConf()
-			fmt.Println("uuid:", conf.Uuid)
-		case "help":
-			fmt.Println(usage)
-			os.Exit(0)
-		default:
-			getConf()
+	if newkey {
+		conf.Uuid = uuid.New().String()
+		conf.Host = defaultHost
+		conf.Port = defaultPort
+		file, err := os.Create(executablePath + "/config.ini")
+		check(err)
+		defer file.Close()
+		err = ini.Encode(file, &conf)
+		check(err)
+		fmt.Println("uuid:", conf.Uuid)	
+	} else if getkey { 
+		getConf()
+		fmt.Println("uuid:", conf.Uuid)
+	} else {
+		getConf()
 	}
-		
 	
 	done := make(chan struct{})
 	c_hub := make(chan struct{})
