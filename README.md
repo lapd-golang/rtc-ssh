@@ -7,7 +7,7 @@ Rtc-SSH enables connection with SSH  Raspberry PI, BeagleBone and other devices,
 wget https://github.com/mxseba/rtc-ssh/releases/download/v0.1.2/rtc-ssh_0.1.2_Linux_armv7.tar.gz
 tar xvfz rtc-ssh_0.1.1_Linux_armv7.tar.gz
 cd rtc-ssh_0.1.1_Linux_armv7
-./rtc-ssh newkey
+./rtc-ssh -newkey
 uuid xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 Signal OK
 ```
