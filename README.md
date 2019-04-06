@@ -1,10 +1,10 @@
 # Rtc-SSH
 ##### SSH (Secure Shell) via WebRTC
 Rtc-SSH enables connection with SSH  Raspberry PI, BeagleBone and other devices, from the browser using WebRTC. Solves the problem of the lack of public IP address, proxy server, servers behind NAT etc. You can connect to an SSH session: https://www.sqs.io
-<!--
+
 ### Install from binary
 ```
-wget https://github.com/mxseba/rtc-ssh/releases/download/v0.1.1/rtc-ssh_0.1.1_Linux_armv7.tar.gz
+wget https://github.com/mxseba/rtc-ssh/releases/download/v0.1.2/rtc-ssh_0.1.2_Linux_armv7.tar.gz
 tar xvfz rtc-ssh_0.1.1_Linux_armv7.tar.gz
 cd rtc-ssh_0.1.1_Linux_armv7
 ./rtc-ssh newkey
@@ -14,7 +14,7 @@ Signal OK
 Other architectures and releases: https://github.com/mxseba/rtc-ssh/releases<br />
 
 or get source using the Go compilator:
--->
+
 ### Usage
 ```
 go get -u github.com/mxseba/rtc-ssh
