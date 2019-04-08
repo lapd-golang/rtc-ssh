@@ -28,4 +28,4 @@ Signal OK
 ```
 Option <code>-newkey</code> usage only first run, enter the <b>uuid</b> key on the website: https://www.sqs.io 
 
-Rtc-SSH uses the pion-WebRTC library: https://github.com/pions/webrtc
+Rtc-SSH uses the pion-WebRTC library: https://github.com/pion/webrtc
