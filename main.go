@@ -15,7 +15,6 @@ import (
 )
 
 
-
 type Config struct {
 	Uuid     string  `ini:"uuid,identify"`
 	Host     string  `ini:"host,ssh"`
@@ -99,11 +98,8 @@ func main() {
 				case <-time.After(time.Second):
 			}
 			return
-			
 		}
-		
 	}
-
 }
 
 func connect(query string) *websocket.Conn {
@@ -144,9 +140,6 @@ func connect(query string) *websocket.Conn {
 	}()
  	return conn
 }
-
-
-
 
 func hub(c_hub <-chan struct{}, conf Config) {
 
