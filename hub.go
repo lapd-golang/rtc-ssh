@@ -35,9 +35,9 @@ func interpreter(c *websocket.Conn, data Json, conf Config) error {
 									
 			pc.OnICEConnectionStateChange(func(state webrtc.ICEConnectionState) {
 				log.Println("ICE Connection State has changed:", state.String())
-				if state == webrtc.ICEConnectionStateDisconnected {
-					ssh.Close()
-				}
+			//	if state == webrtc.ICEConnectionStateDisconnected {
+			//		ssh.Close()
+			//	}
 			})
 			pc.OnDataChannel(func(dc *webrtc.DataChannel) {
 				if dc.Label() == "SSH" {
@@ -50,25 +50,21 @@ func interpreter(c *websocket.Conn, data Json, conf Config) error {
 				SDP:  data.Sdp,
 			}); err != nil {
 				pc.Close()
-				ssh.Close()
 				return err
 			}
 					
 			answer, err := pc.CreateAnswer(nil)
 			if err != nil {
 				pc.Close()
-				ssh.Close()
 				return err
 			}
 			err = pc.SetLocalDescription(answer)
 			if err != nil {
 				pc.Close()
-				ssh.Close()
 				return err
 			}
 			
 			if err = c.WriteJSON(answer); err != nil {
-				ssh.Close()
 				return err
 			}
 		default:
@@ -83,7 +79,7 @@ func DataChannel(dc *webrtc.DataChannel, conf Config) {
 		ssh, err := net.Dial("tcp", fmt.Sprintf("%s:%d", conf.Host, conf.Port))
 		if err != nil {
 			log.Println("ssh dial failed:", err)
-			pc.Close() 
+			dc.Close() 
 		}
 		log.Println("Connect SSH socket")
 		message := "OPEN_RTC_CHANNEL"
