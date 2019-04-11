@@ -1,4 +1,4 @@
-﻿package main
+package main
 
 import (
 	"fmt"
@@ -35,24 +35,8 @@ func interpreter(c *websocket.Conn, data Json, conf Config) error {
 									
 			pc.OnICEConnectionStateChange(func(state webrtc.ICEConnectionState) {
 				log.Println("ICE Connection State has changed:", state.String())
-			//	if state == webrtc.ICEConnectionStateDisconnected {
-			//		ssh.Close()
-			//	}
 			})
-			pc.OnDataChannel(func(dc *webrtc.DataChannel) {
-				if dc.Label() == "SSH" {
-					ssh, err := net.Dial("tcp", fmt.Sprintf("%s:%d", conf.Host, conf.Port))
-					if err != nil {
-						log.Println("ssh dial failed:", err)
-						dc.Close()
-						pc.Close()
-					} else {
-						log.Println("Connect SSH socket")
-						DataChannel(dc, ssh)
-					}
-				}
-			})
-						
+									
 			if err := pc.SetRemoteDescription(webrtc.SessionDescription{
 				Type: webrtc.SDPTypeOffer,
 				SDP:  data.Sdp,
@@ -75,6 +59,19 @@ func interpreter(c *websocket.Conn, data Json, conf Config) error {
 			if err = c.WriteJSON(answer); err != nil {
 				return err
 			}
+			
+			pc.OnDataChannel(func(dc *webrtc.DataChannel) {
+				if dc.Label() == "SSH" {
+					ssh, err := net.Dial("tcp", fmt.Sprintf("%s:%d", conf.Host, conf.Port))
+					if err != nil {
+						log.Println("ssh dial failed:", err)
+						pc.Close()
+					} else {
+						log.Println("Connect SSH socket")
+						DataChannel(dc, ssh)
+					}
+				}
+			})
 		default:
 			return fmt.Errorf("unknown signaling message %v", data.Type)
 	}
@@ -85,7 +82,7 @@ func interpreter(c *websocket.Conn, data Json, conf Config) error {
 func DataChannel(dc *webrtc.DataChannel, ssh net.Conn) {
 	dc.OnOpen(func() {	
 		message := "OPEN_RTC_CHANNEL"
-		err = dc.SendText(message)
+		err := dc.SendText(message)
 		if err != nil{
 			log.Println("write data error:", err)
 		}
