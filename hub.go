@@ -18,7 +18,7 @@ func (send *Wrap) Write(data []byte) (int, error) {
 	return len(data), err
 }
 
-func interpreter(websocket *websocket.Conn, data Json, conf Config) error {
+func interpreter(ws *websocket.Conn, data Json, conf Config) error {
 	if data.Error != "" {
 		return fmt.Errorf(data.Error)
 	}
@@ -57,7 +57,7 @@ func interpreter(websocket *websocket.Conn, data Json, conf Config) error {
 				return err
 			}
 		
-			if err = websocket.WriteJSON(answer); err != nil {
+			if err = ws.WriteJSON(answer); err != nil {
 				return err
 			}
 		
