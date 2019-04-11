@@ -50,16 +50,17 @@ func interpreter(c *websocket.Conn, data Json, conf Config) error {
 				pc.Close()
 				return err
 			}
+		
 			err = pc.SetLocalDescription(answer)
 			if err != nil {
 				pc.Close()
 				return err
 			}
-			
+		
 			if err = c.WriteJSON(answer); err != nil {
 				return err
 			}
-			
+		
 			pc.OnDataChannel(func(dc *webrtc.DataChannel) {
 				if dc.Label() == "SSH" {
 					ssh, err := net.Dial("tcp", fmt.Sprintf("%s:%d", conf.Host, conf.Port))
@@ -88,14 +89,11 @@ func DataChannel(dc *webrtc.DataChannel, ssh net.Conn) {
 		}
 		io.Copy(&Wrap{dc}, ssh)
 	})
-		
 	dc.OnMessage(func(msg webrtc.DataChannelMessage) {
 		ssh.Write(msg.Data)
 	})
-	
 	dc.OnClose(func() {
 		log.Printf("Close SSH socket")
 		ssh.Close()
 	})
-	
 }
