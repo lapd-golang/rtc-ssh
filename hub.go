@@ -32,12 +32,7 @@ func interpreter(c *websocket.Conn, data Json, conf Config) error {
 			if err != nil {
 				return err
 			}
-			ssh, err := net.Dial("tcp", fmt.Sprintf("%s:%d", conf.Host, conf.Port))
-			if err != nil {
-				log.Println("ssh dial failed:", err)
-				pc.Close() 
-			}
-						
+									
 			pc.OnICEConnectionStateChange(func(state webrtc.ICEConnectionState) {
 				log.Println("ICE Connection State has changed:", state.String())
 				if state == webrtc.ICEConnectionStateDisconnected {
@@ -46,7 +41,7 @@ func interpreter(c *websocket.Conn, data Json, conf Config) error {
 			})
 			pc.OnDataChannel(func(dc *webrtc.DataChannel) {
 				if dc.Label() == "SSH" {
-					DataChannel(dc, ssh)
+					DataChannel(dc, conf)
 				}
 			})
 						
@@ -83,8 +78,13 @@ func interpreter(c *websocket.Conn, data Json, conf Config) error {
 }
 
 
-func DataChannel(dc *webrtc.DataChannel, ssh net.Conn) {
+func DataChannel(dc *webrtc.DataChannel, conf Config) {
 	dc.OnOpen(func() {	
+		ssh, err := net.Dial("tcp", fmt.Sprintf("%s:%d", conf.Host, conf.Port))
+		if err != nil {
+			log.Println("ssh dial failed:", err)
+			pc.Close() 
+		}
 		log.Println("Connect SSH socket")
 		message := "OPEN_RTC_CHANNEL"
 		err := dc.SendText(message)
