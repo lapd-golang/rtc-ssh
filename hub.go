@@ -76,6 +76,7 @@ func interpreter(c *websocket.Conn, data Json, conf Config) error {
 
 func DataChannel(dc *webrtc.DataChannel, conf Config) {
 	var ssh net.Conn
+	var err error
 	dc.OnOpen(func() {	
 		ssh, err = net.Dial("tcp", fmt.Sprintf("%s:%d", conf.Host, conf.Port))
 		if err != nil {
@@ -84,7 +85,7 @@ func DataChannel(dc *webrtc.DataChannel, conf Config) {
 		}
 		log.Println("Connect SSH socket")
 		message := "OPEN_RTC_CHANNEL"
-		err := dc.SendText(message)
+		err = dc.SendText(message)
 		if err != nil{
 			log.Println("write data error:", err)
 		}
