@@ -28,7 +28,6 @@ func interpreter(ws *websocket.Conn, data Json, conf Config) error {
 			log.Println("Signal OK")
 		
 		case "offer":
-						
 			pc, err := webrtc.NewPeerConnection(configRTC)
 			if err != nil {
 				return err
