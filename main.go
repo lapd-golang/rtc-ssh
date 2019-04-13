@@ -47,7 +47,7 @@ func main() {
 	getConf := func(){
 		file, err := os.Open(executablePath + "/config.ini") 
 		if os.IsNotExist(err) && !*newkey {
-			log.Println("File config.ini not found, using option 'newkey'")
+			log.Println("File config.ini not found, using option '-newkey'")
 			os.Exit(0)
 		} 
 		defer file.Close()	
