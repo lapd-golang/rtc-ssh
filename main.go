@@ -44,7 +44,7 @@ func main() {
 	newkey := flag.Bool("newkey", false, "new generate key uuid of connection")
 	getkey := flag.Bool("getkey", false, "display key uuid")
 	setport := flag.Int("port", defaultPort, "port SSH server connection")
-	sethost := flag.String("host", defaultHost, "addres host SSH server connection")
+	sethost := flag.String("host", defaultHost, "address host SSH server connection")
 	flag.Parse()
 	
 	loadConf := func(){
