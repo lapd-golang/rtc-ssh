@@ -34,43 +34,63 @@ func main() {
 	signal.Notify(interrupt, os.Interrupt)
 	
 	var executablePath string
+	var conf Config
+	save := false
+	
 	ex, err := os.Executable()
     	check(err)
 	executablePath = filepath.Dir(ex)
 	
 	newkey := flag.Bool("newkey", false, "new generate key uuid of connection")
 	getkey := flag.Bool("getkey", false, "display key uuid")
+	setport := flag.Int("port", defaultPort, "port SSH server connection")
+	sethost := flag.String("host", defaultHost, "addres host SSH server connection")
 	flag.Parse()
 	
-	var conf Config
-	
-	getConf := func(){
+	loadConf := func(){
 		file, err := os.Open(executablePath + "/config.ini") 
+		if err == nil {
+			err = ini.Decode(file, &conf)
+			check(err)
+		}
 		if os.IsNotExist(err) && !*newkey {
 			log.Println("File config.ini not found, using option '-newkey'")
 			os.Exit(0)
 		} 
 		defer file.Close()	
-		err = ini.Decode(file, &conf)
-		check(err)
-	}
 	
-	if *newkey {
-		conf.Uuid = uuid.New().String()
-		conf.Host = defaultHost
-		conf.Port = defaultPort
+	}
+	saveConf := func(){
+		if conf.Host == "" { conf.Host = defaultHost }
+		if conf.Port == 0 { conf.Port = defaultPort }
 		file, err := os.Create(executablePath + "/config.ini")
 		check(err)
 		defer file.Close()
 		err = ini.Encode(file, &conf)
 		check(err)
-		fmt.Println("uuid:", conf.Uuid)	
-	} else if *getkey { 
-		getConf()
-		fmt.Println("uuid:", conf.Uuid)
-	} else {
-		getConf()
+	
+	}	
+	
+	loadConf()
+	
+	if *setport != defaultPort {
+		conf.Port = *setport 
+		save = true
 	}
+	if *sethost != defaultHost {
+		conf.Host = *sethost 
+		save = true
+	}
+	if *newkey {
+		conf.Uuid = uuid.New().String()
+		save = true
+		fmt.Println("uuid:", conf.Uuid)	
+	} 
+	if save { saveConf() }
+	if *getkey { 
+		fmt.Println("uuid:", conf.Uuid)
+	}
+	
 	
 	done := make(chan struct{})
 	c_hub := make(chan struct{})
