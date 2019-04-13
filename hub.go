@@ -13,8 +13,8 @@ type Wrap struct {
 	*webrtc.DataChannel
 }
 
-func (send *Wrap) Write(data []byte) (int, error) {
-	err := send.DataChannel.Send(data)
+func (rtc *Wrap) Write(data []byte) (int, error) {
+	err := rtc.DataChannel.Send(data)
 	return len(data), err
 }
 
