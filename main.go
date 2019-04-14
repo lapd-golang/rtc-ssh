@@ -29,7 +29,6 @@ type Json struct {
 
 func main() {
 	log.SetFlags(0)
-		
 	interrupt := make(chan os.Signal, 1)
 	signal.Notify(interrupt, os.Interrupt)
 	
@@ -72,7 +71,6 @@ func main() {
 	}	
 	
 	loadConf()
-	
 	if *setport != defaultPort {
 		conf.Port = *setport 
 		save = true
@@ -91,7 +89,6 @@ func main() {
 		fmt.Println("uuid:", conf.Uuid)
 	}
 	
-	
 	done := make(chan struct{})
 	c_hub := make(chan struct{})
 	
@@ -102,7 +99,6 @@ func main() {
 			log.Println("reconnect with the signaling server")
 		}
 	}()	
-	
 	
 	for {
 		select {
