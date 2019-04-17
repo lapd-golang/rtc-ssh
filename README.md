@@ -26,7 +26,7 @@ cd $GOPATH/bin
 uuid xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 Signal OK
 ```
-Option <code>-newkey</code> usage only first run, enter the <b>uuid</b> key on the website: https://sqs.io 
+Option <code>-newkey</code> usage only first run, enter the <b>uuid</b> key on the website: https://sqs.io <br />
+Set ssh server port<code>-setport=xxxx</code>, if ssh has a different port on our server than 22.<br /><br />
+Rtc-SSH uses the pion-WebRTC library: https://github.com/pion/webrtc
 
-Rtc-SSH uses the pion-WebRTC library: https://github.com/pion/webrtc<br />
-<code>-setport=xxxx</code> ssh server port, if ssh has a different port on our server than 22
