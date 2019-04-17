@@ -27,6 +27,6 @@ uuid xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 Signal OK
 ```
 Option <code>-newkey</code> usage only first run, enter the <b>uuid</b> key on the website: https://sqs.io <br />
-If ssh has a different port on our server than 22 set option <code>-setport=xxxx</code><br /><br />
+If ssh has a different port on our server than 22, set the option <code>-setport=xxxx</code><br /><br />
 Rtc-SSH uses the pion-WebRTC library: https://github.com/pion/webrtc
 
